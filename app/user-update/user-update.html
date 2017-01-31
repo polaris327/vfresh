@@ -1,0 +1,60 @@
+<!--<h3 class="page-title" ng-init="Init()">
+    Users
+</h3>-->
+<div class="portlet box green " ng-init="Init()">
+    <div class="portlet-title">
+        <div class="caption">
+            <img style="margin-top:-8px" src="theme/img/lock.png" />Enter New Password
+        </div>
+    </div>
+    <div class="portlet-body">
+        <form role="form" name="frmAddEditUser" novalidate class="form-horizontal">
+            <div class="form-body">
+                <div class="row">
+                	<div class="col-sm-6">
+	                	<div class="row bottom-margin">
+		                    <div class="col-sm-offset-3 col-sm-5">
+		                        <label class="control-label">New Password: <i tooltip="Scale" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+		                        <input class="m-wrap placeholder-no-fix form-control" type="password" autocomplete="off" placeholder="New password" name="password1" ng-model="password1"/>
+		                    </div>
+		                </div>
+		            
+						<div class="row bottom-margin">
+	                		<div class="col-sm-offset-3 col-sm-5">
+		                        <label class="control-label">Re-enter Password:<i tooltip="Units" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+		                        <input class="m-wrap placeholder-no-fix form-control" type="password" autocomplete="off" placeholder="Confirm password" name="password2" ng-model="password2"/>
+		                    </div>
+	                   	</div>
+	                </div>
+	              	<div class="col-sm-5">
+	              		<div class="portlet box green user-detail">
+	              			<div class="portlet-title">
+	              				<div class="caption">
+						            <img style="margin-top:-8px" src="theme/img/user.png" />User Details
+						        </div>
+	              			</div>
+	              			<div class="portlet-body">
+	              				<h5>Name:</h5> {{User.firstName}} &nbsp; {{User.lastName}}<br>
+	              				<h5>Position:</h5>{{User.position}}<br>
+	              				<h5>Company:</h5>{{User.internalCompany}}<br>
+	              				<br>
+	              				<h5>Email:</h5>{{User.email}}<br>
+	              				<h5>Mobile:</h5>{{User.phone}}<br>
+	              				<br>
+	              				<h5>SmartTrace Role:</h5>{{User.roles.join()}}<br>
+	              				<br>
+	              				<p style="color:#5BCA45">User details can be edited by contacting your company's SmartTrace Admin</p>
+	              			</div>
+	              		</div>
+	              	</div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="text-center">
+                <button class="btn green" ng-click="SavePassword()" type="submit">Save</button>
+                <button class="btn default" type="button">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

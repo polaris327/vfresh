@@ -1,0 +1,147 @@
+﻿<!--<h3 class="page-title" ng-if="!fromModalPopup">
+    Locations
+</h3>-->
+<div class="portlet box green ">
+    <div class="portlet-title">
+        <div class="caption">
+            <img src="../../theme/img/headerLocations.png" /> {{Action}}&nbsp;a location
+        </div>
+        <div class="pull-right" ng-if="fromModalPopup">
+            <button type="button" style="vertical-align:middle;color:white" class="close" ng-click="close()">Close</button>
+        </div>
+    </div>
+    <div class="portlet-body form">
+        <div class="row">
+            <div class="col-sm-3">
+                <form role="form" name="frmAddEditLocation" novalidate class="form-horizontal">
+                    <div class="form-body">
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <input type="hidden" ng-model="Location.Lat" />
+                                <input type="hidden" ng-model="Location.Lang" />
+                                <label class="pull-left">Location Name:&nbsp;<i tooltip="Location name" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+                                <label class="control-label pull-right"><span class="text-error">*</span></label>
+                                <input type="text" name="LocationName" ng-model="Location.locationName" maxlength="50" class="form-control" required />
+                                <span ng-cloak ng-if="frmAddEditLocation.$invalid && frmAddEditLocation.$submitted">
+                                    <span ng-cloak class="text-danger" ng-if="frmAddEditLocation.LocationName.$error.required">Please enter location name</span>
+                                    <span ng-cloak class="text-danger" ng-if="frmAddEditLocation.LocationName.$error.maxlength">Location name must be less than or equal to 50 chars</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <label>Company:&nbsp;<i tooltip="Company Name" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+                                <input type="text" name="Company" ng-model="Location.companyName" maxlength="50" class="form-control" />
+                                <span ng-cloak ng-if="frmAddEditLocation.$invalid && frmAddEditLocation.$submitted">
+                                    <span ng-cloak class="text-danger" ng-if="frmAddEditLocation.Company.$error.maxlength">Company must be less than or equal to 50 chars</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <label>Notes:&nbsp;<i tooltip="Notes" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+                                <input type="text" name="LocationNotes" ng-model="Location.notes" maxlength="120" class="form-control" />
+                                <span ng-cloak ng-if="frmAddEditLocation.$invalid && frmAddEditLocation.$submitted">
+                                    <span ng-cloak class="text-danger" ng-if="frmAddEditLocation.LocationNotes.$error.maxlength">Location notes must be less than or equal to 120 chars</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <label class="pull-left">Address:&nbsp;<i tooltip="Address" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+                                <label class="control-label pull-right"><span class="text-error">*</span></label>
+                                <textarea disabled="disabled" readonly="readonly" ng-model="Location.address" name="LocationAddress" class="form-control" maxlength="150" required></textarea>
+                                <span ng-cloak ng-if="frmAddEditLocation.$invalid && frmAddEditLocation.$submitted">
+                                    <span ng-cloak class="text-danger" ng-if="frmAddEditLocation.LocationAddress.$error.required">Please enter location address</span>
+                                    <span ng-cloak class="text-danger" ng-if="frmAddEditLocation.LocationAddress.$error.maxlength">Location address must be less than or equal to 150 chars</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <label>Radius&nbsp;<i tooltip="Radius in Meters" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+                                <div class="btn-group " role="group" aria-label="...">
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="radious btn btn-default" ng-class="{'active': radious == 500}" ng-click="ChangeRadious(500)">500m</button>
+                                    </div>
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="radious btn btn-default" ng-class="{'active': radious == 1000}" ng-click="ChangeRadious(1000)">1000m</button>
+                                    </div>
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="radious btn btn-default" ng-class="{'active': radious == 3000}" ng-click="ChangeRadious(3000)">3000m</button>
+                                    </div>
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="radious btn btn-default" ng-class="{'active': radious == 5000}" ng-click="ChangeRadious(5000)">5000m</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <div class="checkbox-list">
+                                    <label for="startloc">
+                                        <input type="checkbox" ng-model="Location.startFlag" id="startloc"> Shipped From&nbsp;<i tooltip="Location start flag" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <div class="checkbox-list">
+                                    <label for="interimstop">
+                                        <input type="checkbox" ng-model="Location.interimFlag" id="interimstop"> Interim Stop&nbsp;<i tooltip="Location interim flag" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <div class="checkbox-list">
+                                    <label for="entloc">
+                                        <input type="checkbox" ng-model="Location.endFlag" id="entloc"> Shipped To&nbsp;<i tooltip="Location end flag" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-left:0;margin-right:-30px">
+                        <div class="text-center" ng-if="!fromModalPopup">
+                            <div class="form-actions">
+                                <button class="btn green" ng-click="SaveData(frmAddEditLocation.$valid,false)" type="submit">Save</button>
+                                <a class="btn default" ui-sref="manage.loc">Cancel</a>
+                            </div>
+                        </div>
+                        <div class="text-center" ng-if="fromModalPopup">
+                            <div class="form-actions">
+                                <button class="btn green" ng-click="SaveData(frmAddEditLocation.$valid,true)" type="submit">Save & Close</button>
+                                <a class="btn default" ng-click="close()">Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-sm-9">
+                <div id="mapLocation" style="width:100%;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('document').ready(function () {
+        $('button.radious').click(function () {
+            $('button.radious').removeClass('active');
+            $(this).addClass('active');
+        });
+
+        setTimeout(function () {
+            window.scrollTo(0, 0);     // run it a bit later also for browser compatibility
+        }, 1000);
+    });
+
+
+    //function initMap() {
+    //    angular.element(document.getElementById('map')).scope().InitMap();
+    //}
+
+</script>

@@ -1,0 +1,63 @@
+<!--<h3 class="page-title" ng-init="Init()">
+    Users
+</h3>-->
+<div class="portlet box green " ng-init="Init()">
+    <div class="portlet-title">
+        <div class="caption">
+            <img style="margin-top:-8px" src="theme/img/setting.png" />Update Preferences
+        </div>
+    </div>
+    <div class="portlet-body">
+        <form role="form" name="frmAddEditUser" novalidate class="form-horizontal">
+            <div class="form-body">
+                
+                <div class="form-group">
+                	<div class="row bottom-margin">
+                		<div class="col-sm-offset-2 col-sm-4">
+		                    <div class="col-md-7 col-md-offset-3">
+		                        <label class="control-label">Scale<i tooltip="Scale" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+		                        <select class="form-control" ng-model="User.temperatureUnits">
+		                            <option value="Celsius">Celsius</option>
+		                            <option value="Fahrenheit">Fahrenheit</option>
+		                        </select>
+		                    </div>
+		                </div>
+
+		                <div class="col-sm-4">
+		                    <div class="col-md-7 col-md-offset-3">
+		                        <label class="control-label">Units<i tooltip="Units" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+		                        <select class="form-control" ng-model="User.measurementUnits">
+		                            <option value="Metric">Metric (meters)</option>
+		                        </select>
+		                    </div>
+		                </div>
+                   	</div>
+                    
+                	<div class="row bottom-margin">
+                		<div class="col-sm-offset-2 col-sm-4">
+		                    <div class="col-md-7 col-md-offset-3">
+		                        <label class="control-label">Language<i tooltip="Language" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+		                        <select class="form-control" ng-model="User.language" ng-options="language as language for language in LanguageList">
+		                        </select>
+		                       </div>
+		                </div>
+
+		                <div class="col-sm-4">
+		                    <div class="col-md-7 col-md-offset-3">
+		                        <label class="control-label">Timezone<i tooltip="Timezone" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+		                        <select class="form-control" ng-model="User.timeZone" ng-options="timezone.id as timezone.displayName for timezone in TimezoneList">
+		                        </select>
+                    		</div>
+                    	</div>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="text-center">
+                <button class="btn green" ng-click="SaveData()" type="submit">Save</button>
+                <button class="btn default" type="button">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

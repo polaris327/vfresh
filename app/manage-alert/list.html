@@ -1,0 +1,105 @@
+﻿
+<!--<h3 class="page-title" ng-init="Init()">
+    Alert Profiles
+</h3>-->
+<div class="portlet box green " ng-init="Init()">
+    <div class="portlet-title">
+        <div class="caption">
+            <i class="fa fa-bell"></i> List of alert profiles
+        </div>
+    </div>
+    <div class="portlet-body">
+        <div class="pull-left">
+            Show 
+            <select class="form-control" style="width:auto;display:inline-block" ng-change="PageSizeChanged()" ng-model="PageSize">
+                <option value="20" selected>
+                    20
+                </option>
+                <option value="50">
+                    50
+                </option>
+                <option value="100">
+                    100
+                </option>
+            </select>
+        </div>
+        <div class="pull-right">
+            <a class="btn btn-default pull-right" href="/#/manage/add-alert"><i class="fa fa-plus"></i>&nbsp;Add New Alert Profile</a>
+        </div>
+        <div class="clearfix"></div>
+        <br />
+        <hr />
+        <div class="clearfix"></div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <tr>
+                    <th width="15%" ng-click="Sorting('alertProfileName')">
+                        <span class="pull-left">Alert Profile Name</span>
+                        <span class="pull-right" style="position:relative;">
+                            <a ng-class="{'active-sort':So=='asc' && Sc=='alertProfileName'}"><i class="fa fa-sort-asc" style="position:absolute"></i></a>
+                            <a ng-class="{'active-sort':So=='desc' && Sc=='alertProfileName'}"><i class="fa fa-sort-desc"></i></a>
+                        </span>
+                    </th>
+                    <th width="20%" ng-click="Sorting('alertProfileDescription')">
+                        <span class="pull-left">Description</span>
+                        <span class="pull-right" style="position:relative;">
+                            <a ng-class="{'active-sort':So=='asc' && Sc=='alertProfileDescription'}"><i class="fa fa-sort-asc" style="position:absolute"></i></a>
+                            <a ng-class="{'active-sort':So=='desc' && Sc=='alertProfileDescription'}"><i class="fa fa-sort-desc"></i></a>
+                        </span>
+                    </th>
+                    <th width="55%" class="text-center" ng-click="Sorting('alertRuleList')">
+                        <span class="pull-left">Alert Rules</span>
+                        <span class="pull-right" style="position:relative;">
+                            <a ng-class="{'active-sort':So=='asc' && Sc=='alertRuleList'}"><i class="fa fa-sort-asc" style="position:absolute"></i></a>
+                            <a ng-class="{'active-sort':So=='desc' && Sc=='alertRuleList'}"><i class="fa fa-sort-desc"></i></a>
+                        </span>
+                    </th>
+                    <th width="5%" class="text-center">
+
+                    </th>
+                    <th width="5%" class="text-center">
+
+                    </th>
+                </tr>
+                <tr ng-repeat="alert in AlertList">
+                    <td ng-bind="alert.alertProfileName"></td>
+                    <td ng-bind="alert.alertProfileDescription"></td>
+                    <td>
+                        <span>
+                            {{alert.rule}}
+                        </span>
+                    </td>
+                    <td class="text-center">
+                        <a class="btn green" href="/#/manage/edit-alert/{{alert.alertProfileId}}"><i class="fa fa-pencil"></i>&nbsp;Edit</a>
+                    </td>
+                    <td class="text-center">
+                        <!--<a class="btn green" ng-click="confirm();DeleteAlertProfile(alert.alertProfileId)"><i class="fa fa-remove"></i>&nbsp;Delete</a>-->
+                        <a class="btn green" ng-click="confirm(alert.alertProfileId);"><i class=" fa fa-remove"></i>&nbsp;Delete</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <pagination class="pagination-sm" max-size="5" on-select-page="PageChanged(page)" total-items="AlertList.totalCount" page="PageIndex" items-per-page="PageSize" boundary-links="true" rotate="false" first-text="<<" last-text=">>" next-text=">" previous-text="<"></pagination>
+    </div>
+</div>
+<div class="modal fade" tabindex="-1" id="confirmModel" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Do you want to delete this alert profile ?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" aria-label="Close">Cancel</button>
+                <button type="button" class="btn btn-primary" ng-click="DeleteAlertProfile()">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        setTimeout(function () {
+            window.scrollTo(0, 0);     // run it a bit later also for browser compatibility
+        }, 1000);
+    })
+</script>

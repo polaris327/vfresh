@@ -1,0 +1,286 @@
+﻿<div class="portlet box green mainbox" id="print-content">
+    <div class="portlet-title">
+        <div class="caption">
+            <i class="fa fa-truck fa-lg"></i> View shipment details
+        </div>
+        <div class="tools">
+            <!-- <button class="btn default btn-sm uppercase" type="button" ng-click="generatePDF()">PDF</button> -->
+            <button class="btn default btn-sm uppercase" type="button" ng-click="Print()">Print</button>
+        </div>
+    </div>
+    <div class="portlet-body">
+        <div class="tabbable-line">
+            
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="panel panel-default">
+                        <div class="panel-heading portlet-page">
+                            <h4 class="panel-title uppercase">
+                                Goods Being Monitored
+                                <i tooltip="Waiting your tooltip text" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i>
+                            </h4>
+                        </div>
+                        <div class="panel-body">
+                            <div class="portlet box grey sub-portlet">
+                                <div class="portlet-title">
+                                    <a href="" class="tracker-info">
+                                        <div>
+                                            <img class="tiny-icon15" src="theme/img/Tracker{{trackers[MI].index + 1}}.png">
+                                            <span class="tracker-id">Tracker {{trackers[MI].deviceSN}}({{trackers[MI].tripCount}})</span>
+                                            <img class="tiny-icon17" ng-repeat="p in trackers[MI].alertSummary" src="theme/img/alert{{p}}.png">
+                                        </div>
+                                    </a>
+                                    <div class="tools">
+                                        <a href="javascript:;" class="collapse"> </a>
+                                    </div>
+                                </div>
+                                <div class="portlet-body">
+                                    <div class="shipment-desc">{{trackerInfo.shipmentDescription}}</div>
+                                    <table class="tracker-desc">
+                                        <tr><td>Asset Num:</td><td>{{trackerInfo.assetNum}}</td></tr>
+                                        <tr><td>Asset Type:</td><td>{{trackerInfo.assetType}}</td></tr>
+                                        <tr><td>Pallet ID:</td><td>{{trackerInfo.palletId}}</td></tr>
+                                    </table>
+                                    <div>
+                                        <span class="bold-font">Tracker Position:</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portlet box grey">
+                        <div class="portlet-title">
+                            <div class="caption uppercase">
+                                TRACKERS POSSIBLY ON SAME TRIP
+                                <i tooltip="Waiting your tooltip text" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i>
+                            </div>
+                            <div class="tools">
+                                <a href="javascript:;" class="collapse"> </a>
+                            </div>
+                        </div>
+                        <div class="portlet-body">
+                            <div class="portlet box grey sub-portlet" ng-repeat="t in trackers" ng-hide="t.index == MI">
+                                <div class="portlet-title">
+                                    <a href="" class="tracker-info" ng-click="switchTracker(t.index)">
+                                        <div>
+                                            <img class="tiny-icon15" ng-src="theme/img/Tracker{{(t.index + 1)}}.png">
+                                            <span class="tracker-id">Tracker {{t.deviceSN}}({{t.tripCount}})</span>
+                                            <img class="tiny-icon17" ng-repeat="p in t.alertSummary" ng-src="theme/img/alert{{p}}.png">
+                                            <img src="theme/img/load.gif" class="load-icon" ng-hide="t.loadedForIcon">
+                                        </div>
+                                    </a>
+                                    <div class="tools">
+                                        <a href="javascript:;" class="expand"> </a>
+                                    </div>
+                                </div>
+                                <div class="portlet-body" style="display:none;">
+                                    <div class="shipment-desc">{{t.shipmentDescription}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="portlet box grey">
+                        <div class="portlet-title">
+                            <div class="caption uppercase">
+                                Route
+                                <i tooltip="Waiting your tooltip text" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i>
+                            </div>
+                            <div class="tools">
+                                <a href="javascript:;" class="collapse"> </a>
+                            </div>
+                        </div>
+                        <div class="portlet-body">
+                            <table class="tracker-desc"><tr>
+                                <td><img src="theme/img/tinyLocationStart.png"></td>
+                                <td>
+                                    <b class="bold-font">{{trackerInfo.startLocation}}</b><br/>
+                                    <span style="color:#AAA"><b class="light-bold-font">START:</b> {{trackerInfo.startTimeISO}}</span>
+                                </td>
+                            </tr><tr>
+                                <td><img src="theme/img/tinyLocationStop.png"></td>
+                                <td>
+                                    <b class="bold-font">{{trackerInfo.endLocation}}</b><br/>
+                                    <span ng-show="trackerInfo.status == 'Arrived'" style="color:#AAA"><b class="light-bold-font">ARRIVED:</b> {{trackerInfo.arrivalTimeISO}}</span>
+                                    <span ng-show="trackerInfo.status == 'InProgress'" style="color:#AAA"><b class="light-bold-font">ETA:</b> {{trackerInfo.etaISO}}</span>
+                                    <span ng-show="trackerInfo.status == 'Ended'" style="color:#AAA"><b class="light-bold-font">ENDED AT:</b> {{trackerInfo.lastReadingTimeISO}}</span>
+                                    <span ng-show="trackerInfo.status == 'AutoStart'" style="color:#AAA"><b class="light-bold-font">To be determined</b></span>
+                                </td>
+                            </tr></table>
+                            <b class="bold-font" style="padding-right:15px; padding-top:20px;">Status:</b>{{trackerInfo.status}}
+                        </div>
+                    </div>
+                    <div class="portlet box grey">
+                        <div class="portlet-title">
+                            <div class="caption uppercase">
+                                Alerts
+                                <i tooltip="Waiting your tooltip text" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i>
+                            </div>
+                            <div class="tools">
+                                <a href="javascript:;" class="expand"> </a>
+                            </div>
+                        </div>
+                        <div class="portlet-body" style="display:none;">
+                            <table class="tracker-desc">
+                                <tr><td>Alert Profile:</td><td>{{trackerInfo.alertProfileName}}</td></tr>
+                                <tr><td>Who to notify:</td><td>{{trackerInfo.alertPeopleToNotify}}</td></tr>
+                                <tr><td>Schedule(s):</td><td>
+                                    <div ng-repeat="p in trackerInfo.alertsNotificationSchedules">
+                                        {{p.notificationScheduleName}}
+                                        <span ng-show="p.index != trackerInfo.alertsNotificationSchedules.length - 1">,</span>
+                                    </div>
+                                </td></tr>
+                                <tr><td>Alerts yet to fire:</td><td>
+                                    <div ng-repeat="p in trackerInfo.alertYetToFire">
+                                        {{p}}
+                                    </div>
+                                </td></tr>
+                            </table>
+                            <a href="#" ng-show="trackerInfo.alertYetToFire != null" class="bold-font" style="text-decoration:underline;">
+                                Suppress further notifications
+                                <i tooltip="Waiting your tooltip text" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="portlet box grey">
+                        <div class="portlet-title">
+                            <div class="caption uppercase">
+                                Arrival
+                                <i tooltip="Waiting your tooltip text" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i>
+                            </div>
+                            <div class="tools">
+                                <a href="javascript:;" class="expand"> </a>
+                            </div>
+                        </div>
+                        <div class="portlet-body" style="display:none;">
+                            <table class="tracker-desc">
+                                <tr><td>Time of arrival:</td><td>
+                                    {{trackerInfo.arrivalTimeISO}}
+                                    <i tooltip="Waiting your tooltip text" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></td></tr>
+                                <tr><td>Notify when:</td><td>
+                                    {{trackerInfo.arrivalNotificationWithinKm}} Km away
+                                    <i tooltip="Waiting your tooltip text" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></td></tr>
+                                <tr><td>Notified at:</td><td>
+                                    {{trackerInfo.arrivalNotificationTimeISO}}
+                                    <i tooltip="Waiting your tooltip text" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></td></tr>
+                                <tr><td>Who to notify:</td><td>{{trackerInfo.alertPeopleToNotify}}</td></tr>
+                                <tr><td>Schedule(s):</td><td>
+                                    <div ng-repeat="p in trackerInfo.alertsNotificationSchedules">
+                                        {{p.notificationScheduleName}}
+                                        <span ng-show="p.index != trackerInfo.alertsNotificationSchedules.length - 1">,</span>
+                                    </div>
+                                </td></tr>
+                                <tr><td>Comments:</td><td>{{trackerInfo.commentsForReceiver}}</td></tr>
+                                <tr><td>Time of shutdown:</td><td>
+                                    {{trackerInfo.shutdownTimeISO}}
+                                    <i tooltip="Waiting your tooltip text" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></td></tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="portlet box grey">
+                        <div class="portlet-title">
+                            <div class="caption uppercase">
+                                Timeline / Corrective Action
+                                <i tooltip="Waiting your tooltip text" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i>
+                            </div>
+                            <div class="tools">
+                                <a href="javascript:;" class="expand"> </a>
+                            </div>
+                        </div>
+                        <div class="portlet-body text-center" style="display:none;">
+                            Under development
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-9">
+                    <highchart id="chart1" config="chartConfig" class="span10"></highchart>
+
+                    <ng-map 
+                        style="height:300px"
+                        disable-default-u-i="true"
+                        map-type-control-options="{
+                            mapTypeIds: ['ROADMAP']
+                        }"
+                    >
+
+                        <!-- end marker -->
+                        <custom-marker id="end-location" position="{{mapInfo.endLocationForMap.latitude}},{{mapInfo.endLocationForMap.longitude}}" optimized="false" z-index="101"> 
+                            <div class="end-loc-box">
+                                <table class="end-marker-content"><tr>
+                                    <td>
+                                        <b>{{mapInfo.endLocation}}</b><br/>
+                                        <!-- {{mapInfo.etaISO}} -->
+                                    </td>
+                                    <td><img src="theme/img/locationStop.png"></td>
+                                </tr></table>
+                            </div>
+                        </custom-marker>
+
+                        <!-- normal markers -->
+                        <!-- <marker ng-repeat="p in normalMarkers"
+                            position="{{p.data.lat}}, {{p.data.long}}"
+                            icon="{
+                                url:'{{p.iconUrl}}',
+                                scaledSize:[{{p.len}}, {{p.len}}],
+                                anchor:[{{p.len / 2}}, {{p.len / 2}}]
+                            }"
+                            data="{{p}}"
+                            zIndex="4"
+                            on-mouseover="showAlertsUI();"
+                        ></marker>
+                         -->
+                        <!--special markers -->
+                        <marker ng-if="specialMarkers.length != 0" ng-repeat="p in specialMarkers"
+                            position="{{p.data.lat}}, {{p.data.long}}"
+                            icon="{
+                                url:'{{p.iconUrl}}',
+                                scaledSize:[{{p.len}}, {{p.len}}],
+                                anchor:[{{p.len / 2}}, {{p.len / 2}}]
+                            }"
+                            data="{{p}}"
+                            zIndex="3"
+                            on-mouseover="showAlertsUI();"
+                            on-mouseout="hideAlertsUI();"
+                        ></marker>
+                        
+                        <!-- start marker -->
+                        <custom-marker id="start-location" position="{{mapInfo.startLocationForMap.latitude}},{{mapInfo.startLocationForMap.longitude}}">
+                            <div class="start-loc-box">
+                                <table class="start-marker-content"><tr>
+                                    <td><img src="theme/img/locationStart.png"></td>
+                                    <td>
+                                        <b>{{mapInfo.startLocation}}</b><br/>
+                                        <!-- {{mapInfo.startTimeISO}} -->
+                                    </td>
+                                </tr></table>
+                            </div>
+                        </custom-marker>
+
+                        <marker position="{{currentPoint.loc.lat}},{{currentPoint.loc.long}}"
+                            icon="{
+                                url:'{{currentPoint.iconUrl}}',
+                                scaledSize:[{{currentPoint.len}}, {{currentPoint.len}}],
+                                anchor:[{{currentPoint.len / 2}}, {{currentPoint.len / 2}}]
+                            }"
+                             optimized="false" z-index="102">
+                        </marker>
+                        
+                        <custom-marker id="gm-alert" position="{{markerData.data.lat}},{{markerData.data.long}}">
+                            <div>
+                                <div class="ttbox" style="border-color:{{diagColor}}" ng-hide={{!ttShow}} ng-repeat="message in msgForMap">
+                                    <div class="tt_title" style="background-color:{{diagColor}}">
+                                        <span ng-bind-html="message.mkttl" ng-hide={{markerData.normal}}></span>
+                                    </div>
+                                    <div class="tt_body" ng-hide={{markerData.normal}}>
+                                        <div ng-repeat="msg in message.mapMarkerMessage">{{msg}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </custom-marker>
+                    </ng-map>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+</div>

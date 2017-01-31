@@ -1,0 +1,17 @@
+﻿<ul class="nav nav-pills">
+    <li ng-click="SelectDay(wd)" ng-repeat="wd in weekDays" style="border:1px solid black;border-radius:4px;text-align:center" ng-class="{'active':wd.selected}" role="presentation">
+        <a href="javascript:void(0)" style="min-width:26.5px;padding:2px 4px;">{{wd.day}}</a>
+    </li>
+</ul>
+
+<div class="btn-group " role="group" aria-label="...">
+    <div class="btn-group" role="group">
+        <button type="button" class="week btn-sm btn btn-link" ng-class="{'active':weekdaysSelection =='all'}" ng-click="SelectDays('all',$event)">All week</button>
+    </div>
+    <div class="btn-group" role="group">
+        <button type="button" class="week btn-sm btn btn-link" ng-class="{'active':weekdaysSelection == 'wd'}" ng-click="SelectDays('wd',$event)">Weekdays</button>
+    </div>
+    <div class="btn-group" role="group">
+        <button type="button" class="week btn-sm btn btn-link" ng-class="{'active':weekdaysSelection == 'we'}" ng-click="SelectDays('we',$event)">Weekend</button>
+    </div>
+</div>

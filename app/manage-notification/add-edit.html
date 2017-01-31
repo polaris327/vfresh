@@ -1,0 +1,248 @@
+﻿<!--<h3 class="page-title" ng-if="!fromModalPopup">
+    Notifications Schedules
+</h3>-->
+<style>
+    .btn-link.active {
+        background-color: #337AB7;
+        color: white;
+    }
+
+    @media (min-width:768px) {
+        .no-padding {
+            padding-left: 0;
+            padding-right: 0;
+        }
+    }
+
+    @media (max-width:991px) {
+        .right {
+            float: left;
+        }
+    }
+
+    @media (min-width:991px) {
+        .right {
+            float: right;
+            padding-right: 10px;
+        }
+    }
+</style>
+<div class="portlet box green " ng-init="Init()">
+    <div class="portlet-title">
+        <div class="caption">
+            <img src="../../theme/img/headerNotificationSchedule.png" /> {{Action}}&nbsp;a notification schedule
+        </div>
+        <div class="pull-right" ng-if="fromModalPopup">
+            <button type="button" style="vertical-align:middle;color:white" class="close" ng-click="close()">Close</button>
+        </div>
+    </div>
+    <div class="portlet-body form">
+        <div class="container">
+            <form role="form" name="frmGenAddEditNoti" id="frmGenAddEditNoti" novalidate class="form-horizontal">
+                <div class="form-body">
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-4">
+                            <label class="control-label pull-left">Schedule Name:&nbsp;<i tooltip="Notification Schedule Name" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+                            <label class="control-label pull-right"><span class="text-error">*</span></label>
+                            <input type="text" maxlength="60" name="Name" class="form-control" ng-model="Noti.notificationScheduleName" required />
+                            <span ng-if="frmGenAddEditNoti.$invalid && frmGenAddEditNoti.$submitted">
+                                <span class="text-danger" ng-if="frmGenAddEditNoti.Name.$error.required">Please enter schedule name</span>
+                                <span class="text-danger" ng-if="frmGenAddEditNoti.Name.$error.maxlength">Schedule name must be less than or equal to 60 chars</span>
+                            </span>
+                        </div>
+                        <div class="col-sm-12 hidden-md hidden-lg">&nbsp;</div>
+                        <div class="col-md-4">
+                            <label class="control-label">Description:&nbsp;<i tooltip="Notification Schedule Description" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+                            <input maxlength="120" type="text" name="Description" class="form-control" ng-model="Noti.notificationScheduleDescription" />
+                            <span ng-if="frmGenAddEditNoti.$invalid && frmGenAddEditNoti.$submitted">
+                                <span class="text-danger" ng-if="frmGenAddEditNoti.Description.$error.maxlength">Description must be less than or equal to 120 chars</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <h3 class="caption-subject font-green-sharp bold">Schedule Items</h3>
+                                </div>
+                                <hr />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12" ng-repeat="person in Noti.schedules">
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label class="control-label pull-left">Person:&nbsp;<i tooltip="Person" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+                                <label class="control-label pull-right"><span class="text-error">*</span></label>
+                                <select ng-change="GetSelectedUserPositionCompany(person)" class="form-control" ng-init="valUserId = 'valUserId'+ $index" name="{{valUserId}}" ng-options="user.id as user.fullName for user in UserList" ng-model="person.userId" required>
+                                    <option value="">-- Select User --</option>
+                                </select>
+                                <small class="text-muted control-label">
+                                    {{person.selectedUserPositionCompany}}
+                                </small>
+                                <span ng-if="frmGenAddEditNoti.$invalid && frmGenAddEditNoti.$submitted">
+                                    <span class="text-danger" ng-if="frmGenAddEditNoti[valUserId].$error.required">Please select user</span>
+                                </span>
+                            </div>
+                            <div class="col-sm-12 hidden-md hidden-lg">&nbsp;</div>
+                            <div class="col-md-2">
+                                <div class="row">
+                                    <div class="col-xs-4 text-center">
+                                        <label for="sms" class="control-label">SMS</label><br />
+                                        <input type="checkbox" ng-model="person.sendSms" id="sms">
+                                    </div>
+                                    <div class="col-xs-4 text-center">
+                                        <label for="email" class="control-label">Email</label><br />
+                                        <input type="checkbox" ng-model="person.sendEmail" id="email">
+                                    </div>
+                                    <div class="col-xs-4 text-center">
+                                        <label for="app" class="control-label">App</label><br />
+                                        <input type="checkbox" ng-model="person.sendApp" id="app">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 hidden-md hidden-lg">&nbsp;</div>
+                            <div class="col-md-3 no-padding" style="border-right:1px solid #D2D2D2">
+                                <weekdays class="right" weekdays-selected="person.weekDays" weekdays-modal="person.weekDays" weekdays-selection="person.selection"></weekdays>
+                            </div>
+                            <div class="clearfix hidden-md hidden-lg">&nbsp;</div>
+                            <div class="col-sm-12 hidden-md hidden-lg">&nbsp;</div>
+                            <div class="col-md-3">
+                                <div class="row" style="margin-bottom:1.25%">
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            <select class="form-control input-sm" ng-model="person.fromTime" ng-change="CheckFromTime(person,$index)">
+                                                <option>- Select -</option>
+                                                <option value="00:00">00:00</option>
+                                                <option value="01:00">01:00</option>
+                                                <option value="02:00">02:00</option>
+                                                <option value="03:00">03:00</option>
+                                                <option value="04:00">04:00</option>
+                                                <option value="05:00">05:00</option>
+                                                <option value="06:00">06:00</option>
+                                                <option value="07:00">07:00</option>
+                                                <option value="08:00">08:00</option>
+                                                <option value="09:00">09:00</option>
+                                                <option value="10:00">10:00</option>
+                                                <option value="11:00">11:00</option>
+                                                <option value="12:00">12:00</option>
+                                                <option value="13:00">13:00</option>
+                                                <option value="14:00">14:00</option>
+                                                <option value="15:00">15:00</option>
+                                                <option value="16:00">16:00</option>
+                                                <option value="17:00">17:00</option>
+                                                <option value="18:00">18:00</option>
+                                                <option value="19:00">19:00</option>
+                                                <option value="20:00">20:00</option>
+                                                <option value="21:00">21:00</option>
+                                                <option value="22:00">22:00</option>
+                                                <option value="23:00">23:00</option>
+                                            </select>
+                                            <span class="input-group-addon" style="margin:0 1%" id="basic-addon1">To</span>
+                                            <select class="form-control input-sm" ng-init="valToTime = 'valToTime'+ $index;" name="{{valToTime}}" ng-model="person.toTime" ng-change="CheckToTime(person,$index)">
+                                                <option>- Select -</option>
+                                                <option value="00:59">00:59</option>
+                                                <option value="01:59">01:59</option>
+                                                <option value="02:59">02:59</option>
+                                                <option value="03:59">03:59</option>
+                                                <option value="04:59">04:59</option>
+                                                <option value="05:59">05:59</option>
+                                                <option value="06:59">06:59</option>
+                                                <option value="07:59">07:59</option>
+                                                <option value="08:59">08:59</option>
+                                                <option value="09:59">09:59</option>
+                                                <option value="10:59">10:59</option>
+                                                <option value="11:59">11:59</option>
+                                                <option value="12:59">12:59</option>
+                                                <option value="13:59">13:59</option>
+                                                <option value="14:59">14:59</option>
+                                                <option value="15:59">15:59</option>
+                                                <option value="16:59">16:59</option>
+                                                <option value="17:59">17:59</option>
+                                                <option value="18:59">18:59</option>
+                                                <option value="19:59">19:59</option>
+                                                <option value="20:59">20:59</option>
+                                                <option value="21:59">21:59</option>
+                                                <option value="22:59">22:59</option>
+                                                <option value="23:59">23:59</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class=" btn-group " role="group" aria-label="...">
+                                            <div class="btn-group" role="group">
+                                                <button type="button" ng-class="{'active':person.bizHours}" class="hour btn-sm btn btn-link" ng-click="SelectHour('biz',$event,person,$index)">Business hours</button>
+                                            </div>
+                                            <div class="btn-group" role="group">
+                                                <button type="button" ng-class="{'active':person.allHours}" class="hour btn-sm btn btn-link" ng-click="SelectHour('all',$event,person,$index)">All day</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span ng-if="frmGenAddEditNoti.$invalid && frmGenAddEditNoti.$submitted">
+                                    <span class="text-danger" ng-if="frmGenAddEditNoti[valToTime].$error.toTime">To Time must be greater than From Time</span>
+                                </span>
+                            </div>
+                            <div class="col-md-1 text-right">
+                                <label class="control-label" ng-if="Noti.schedules.length > 1" ng-click="DeletePerson(person)" style="color:#87B04C;cursor:pointer;text-decoration:underline">Delete</label>
+                                <label class="control-label" ng-if="Noti.schedules.length > 1"><span style="color:black;text-decoration:none">&nbsp;<i tooltip="Delete this row. The Delete action is finalised when page is saved." tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></span></label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <hr />
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="control-label" ng-click="AddPerson()" style="color:#87B04C;cursor:pointer;text-decoration:underline"><i class="fa fa-plus"></i>&nbsp;Add another</label>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+
+                <!--</ng-form>-->
+                <div class="clearfix"></div>
+
+            </form>
+        </div>
+        <div class="text-center" ng-show="Noti.schedules.length > 0 && !fromModalPopup" style="padding-top:70px">
+            <div class="form-actions">
+                <button class="btn green" form="frmGenAddEditNoti" ng-click="SaveNoti(frmGenAddEditNoti.$valid,false)" type="submit">Save</button>
+                <a class="btn default" data-toggle="modal" data-target="#confirmModel">Cancel</a>
+            </div>
+        </div>
+        <div class="text-center" ng-show="Noti.schedules.length > 0 && fromModalPopup" style="padding-top:70px">
+            <div class="form-actions">
+                <button class="btn green" form="frmGenAddEditNoti" ng-click="SaveNoti(frmGenAddEditNoti.$valid,true)" type="submit">Save</button>
+                <a class="btn default" ng-click="close()">Cancel</a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+<div class="modal fade" tabindex="-1" id="confirmModel" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Any unsaved changes will be lost including delete, are you sure you want to cancel?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" aria-label="Close">Cancel</button>
+                <button type="button" class="btn btn-primary" ng-click="WarnUserAndRedirect()">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        setTimeout(function () {
+            window.scrollTo(0, 0);     // run it a bit later also for browser compatibility
+        }, 1000);
+    })
+</script>

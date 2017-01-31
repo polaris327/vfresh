@@ -1,0 +1,247 @@
+﻿<div class="">
+    <!--<h3 class="page-title">
+        New Shipment
+    </h3>-->
+    <div class="portlet box green ">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="fa fa-truck"></i> Enter new shipment details
+            </div>
+        </div>
+        <div class="portlet-body form">
+            <div class="container">
+                <form role="form" name="frmAddNewShipment" id="frmAddNewShipment" novalidate class="form-horizontal">
+                    <div class="form-body">
+                        <div class="form-group">
+                            <div class="col-md-4 col-sm-offset-3">
+                                <label class="control-label">Shipment Template:&nbsp;<i tooltip="Existing Shipment Template" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+                                <select ng-change="ChangeSelectedShipmentTemplate()" ng-model="ShipmentTemplate.selectedShipmentTemplateId" ng-options="shipTemp.shipmentTemplateId as shipTemp.shipmentTemplateName for shipTemp in ShipmentTemplates" class="form-control">
+                                    <option value="">-- Please Select --</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="control-label">&nbsp;</label><br />
+                                <button class="btn default" ng-click="WarnUserAndRedirectToAddShipment()" type="button"><i class="fa fa-plus"></i>&nbsp;Add</button>
+                                <button class="btn default" ng-click="WarnUserAndRedirectToEditShipment(ShipmentTemplate.selectedShipmentTemplateId)" ng-show="ShipmentTemplates.length > 0" type="button"><i class="fa fa-pencil"></i>&nbsp;Edit</button>
+                            </div>
+                        </div>
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <h3 class="caption-subject font-green-sharp bold">1. Goods being monitored</h3>
+                            </div>
+                            <hr />
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-4">
+                                <label class="control-label pull-left">Tracker:&nbsp;<i tooltip="Choose a tracker that is accessible by your user group" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+                                <label class="control-label pull-right"><span class="text-error">*</span></label>
+                                <div class="clearfix"></div>
+                                <select class="form-control" name="tracker" required ng-model="NewShipment.shipment.deviceImei" ng-options="tracker.imei as (tracker.sn + ' - ' + tracker.name + ' - ' + tracker.description) for tracker in TrackerList">
+                                    <option value="">-- Please Select --</option>
+                                </select>
+                                <small class="text-muted">Choose a tracker that is accessible by your user group</small>
+                                <br />
+                                <span ng-if="frmAddNewShipment.$invalid && frmAddNewShipment.$submitted" ng-cloak>
+                                    <span ng-cloak class="text-danger" ng-if="frmAddNewShipment.tracker.$error.required">Please select tracker</span>
+                                </span>
+                            </div>
+                            <div class="col-sm-12 visible-xs">&nbsp;</div>
+                            <div class="col-sm-8">
+                                <label class="control-label pull-left">Shipment Description:&nbsp;<i tooltip="Shipment Description(Trip name / PO num / Load identity / etc)" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+                                <label class="control-label" style="margin-left:24%"><span class="text-error">*</span></label>
+                                <div class="clearfix"></div>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" maxlength="120" placeholder="Enter Shipment Description" ng-model="NewShipment.shipment.shipmentDescription" />
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default" style="border:none"> - </button>
+                                    </div>
+                                    <input type="text" class="form-control" readonly ng-model="NewShipment.shipment.DiscriptionDateTime" placeholder="DateShipped will be added to Desc." />
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="col-sm-12 visible-xs">&nbsp;</div>
+                            <div class="col-sm-offset-4 col-sm-4">
+                                <label class="control-label">Pallet Id:&nbsp;<i tooltip="Pallet unique Identity If available" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+                                <input type="text" class="form-control" placeholder="Enter Pallet Id" ng-model="NewShipment.shipment.palletId" />
+                                <small class="text-muted">Enter a Pallet unique Identity If available</small>
+                            </div>
+                            <div class="col-sm-12 visible-xs">&nbsp;</div>
+                            <div class="col-sm-4">
+                                <label class="control-label">Asset Num:&nbsp;<i tooltip="Enter the identity of the asset carrying the goods" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+                                <input type="text" class="form-control" placeholder="Enter Asset Num" ng-model="NewShipment.shipment.assetNum" />
+                                <small class="text-muted">Enter the identity of the asset carrying the goods</small>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <h3 class="caption-subject font-green-sharp bold">2. Route</h3>
+                            </div>
+                            <hr />
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <label class="control-label">Shipment From:&nbsp;<i tooltip="Shipment from" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+                                <select class="form-control" ng-change="GetShippedFromAddress()" ng-model="NewShipment.shipment.shippedFrom" ng-options="location.locationId as location.DisplayText for location in FromLocationList">
+                                    <option value="">-- Please Select --</option>
+                                </select>
+                                <small class="text-muted">
+                                    {{shippedFromAddress}}
+                                </small>
+                            </div>
+                            <div class="col-sm-12 visible-xs">&nbsp;</div>
+                            <div class="col-sm-6">
+                                <label class="control-label">Shipment To:&nbsp;<i tooltip="Shipment to" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+                                <select class="form-control" ng-change="GetShippedToAddress()" ng-model="NewShipment.shipment.shippedTo" ng-options="location.locationId as location.DisplayText for location in ToLocationList">
+                                    <option value="">-- Please Select --</option>
+                                </select>
+                                <small class="text-muted">
+                                    {{shippedToAddress}}
+                                </small>
+                            </div>
+                            <div class="col-sm-12">&nbsp;</div>
+                            <div class="col-sm-4">
+                                <label>&nbsp;</label>
+                                <label class="control-label">Date Shipped:&nbsp;<i tooltip="Date shipped" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+                                <div class="input-group">
+                                    <input show-button-bar="false" id="txtDate" type="text" class="form-control" max="maxDate" placeholder="Select Date" datepicker-popup="dd-MMM-yyyy" ng-model="NewShipment.shipment.shipmentDate" close-text="Close" />
+                                    <label for="txtDate" class="input-group-addon">
+                                        <i class="glyphicon glyphicon-calendar"></i>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 visible-xs">&nbsp;</div>
+                            <div class="col-sm-4">
+                                <!--{{time1 | date: 'shortTime'}}-->
+                                <!--
+                    minute-step="15" -->
+                                <timepicker ng-model="time1" show-meridian='showMeridian' />
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <h3 class="caption-subject font-green-sharp bold">3. Alerts</h3>
+                            </div>
+                            <hr />
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-4">
+                                <label class="control-label">Alert Profile:&nbsp;<i tooltip="Alert Profile" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+                                <select ng-model="NewShipment.shipment.alertProfileId" ng-change="CreateAlertRule()" ng-options="alert.alertProfileId as alert.alertProfileName for alert in AlertList" class="form-control input-sm">
+                                    <option value="">-- Please Select --</option>
+                                </select>
+                                <small class="text-muted">
+                                    {{alertRuleListForSelectedAlertProfile}}
+                                </small>
+                            </div>
+                            <div class="col-sm-12 visible-xs">&nbsp;</div>
+                            <div class="col-sm-3">
+                                <label class="control-label">Alert Suppression:&nbsp;<i tooltip="Alert suppression during cool down" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+                                <div class="clearfix"></div>
+                                <div class="btn-group" role="group">
+                                    <button type="button" ng-class="{'active':NewShipment.shipment.alertSuppressionMinutes==0}" ng-model="NewShipment.shipment.alertSuppressionMinutes" ng-click="NewShipment.shipment.alertSuppressionMinutes = 0" class="btn btn-default">0 hours</button>
+                                    <button type="button" ng-class="{'active':NewShipment.shipment.alertSuppressionMinutes==120}" ng-model="NewShipment.shipment.alertSuppressionMinutes" ng-click="NewShipment.shipment.alertSuppressionMinutes = 120" class="btn btn-default">2 hours</button>
+                                    <button type="button" ng-class="{'active':NewShipment.shipment.alertSuppressionMinutes==240}" ng-model="NewShipment.shipment.alertSuppressionMinutes" ng-click="NewShipment.shipment.alertSuppressionMinutes = 240" class="btn btn-default">4 hours</button>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 visible-xs">&nbsp;</div>
+                            <div class="col-sm-5">
+                                <label class="control-label">Notification Schedule(s) For Alerts&nbsp;<i tooltip="Notification schedule(s) for alerts" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+                                <br /><select style="width:100%" ng-change="ChangeNotiScheduleForAlert()" multiple ui-select2="NotificationScheduleOption" ng-model="NewShipment.shipment.alertsNotificationSchedules" data-placeholder="Select Notification Schedule For Alert Profile">
+                                    <option ng-repeat="noti in NotificationList" value="{{noti.notificationScheduleId}}">{{noti.notificationScheduleName}}</option>
+                                </select><br />
+                                <small class="text-muted">
+                                    {{AlertNotiRule}}
+                                </small>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <h3 class="caption-subject font-green-sharp bold">4. On arrival</h3>
+                            </div>
+                            <hr />
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-4">
+                                <label class="control-label">Comments For Receiver:&nbsp;<i tooltip="Comments for Receiver" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+                                <textarea class="form-control" ng-model="NewShipment.shipment.commentsForReceiver" placeholder=""></textarea>
+                            </div>
+                            <div class="col-sm-12 visible-xs">&nbsp;</div>
+                            <div class="col-sm-3">
+                                <label class="control-label">Arrival Notification:&nbsp;<i tooltip="Arrival notification" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+                                <select class="form-control " ng-model="NewShipment.shipment.arrivalNotificationWithinKm">
+                                    <option value="">No notification needed</option>
+                                    <option value="0">At Destination</option>
+                                    <option value="5">Less than 5 kms away</option>
+                                    <option value="10">Less than 10 kms away</option>
+                                    <option value="25">Less than 25 kms away</option>
+                                    <option value="50">Less than 50 kms away</option>
+                                </select>
+                                <label class="checkbox-inline" for="exc-noti">
+                                    <input type="checkbox" id="exc-noti" ng-model="NewShipment.shipment.excludeNotificationsIfNoAlerts"> only notify if alerts fired&nbsp;<i tooltip="Exclude Notification" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i>
+                                </label>
+                            </div>
+                            <div class="col-sm-12 visible-xs">&nbsp;</div>
+                            <div class="col-sm-5">
+                                <label class="control-label">Schedule(s) For Arrival Notification:&nbsp;<i tooltip="Schedule(s) for arrival notification" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+                                <br /><select style="width:100%" ng-change="ChangeNotiScheduleForArrival()" multiple ui-select2="NotificationScheduleOption" ng-model="NewShipment.shipment.arrivalNotificationSchedules" data-placeholder="Select Notification Schedule For Alert Profile">
+                                    <option ng-repeat="noti in NotificationList" value="{{noti.notificationScheduleId}}">{{noti.notificationScheduleName}}</option>
+                                </select><br />
+                                <small class="text-muted control-label">
+                                    {{ArrivalNotiRule}}
+                                </small>
+                            </div>
+                            <div class="col-sm-12">&nbsp;</div>
+                            <div class="col-sm-4">
+                                <label class="control-label">Shutdown Device:&nbsp;<i tooltip="Shutdown device" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+                                <select class="form-control" ng-model="NewShipment.shipment.shutdownDeviceAfterMinutes">
+                                    <option value="">Don't Shutdown</option>
+                                    <option value="0">On Arrival</option>
+                                    <option value="60">After 1 hr at destination</option>
+                                    <option value="120">After 2 hr at destination</option>
+                                    <option value="240">After 4 hr at destination</option>
+                                    <option value="480">After 8 hr at destination</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="clearfix"></div>
+                        <hr />
+                        <div class="clearfix"></div>
+                        <div class="form-group">
+                            <div class="col-sm-2 col-sm-offset-3 text-center" style="padding-left:0">
+                                <label for="save_as_new_template" class="checkbox-inline">
+                                    <br />
+                                    <input type="checkbox" ng-model="NewShipment.saveAsNewTemplate" id="save_as_new_template"> Save As New Template
+                                </label>
+                            </div>
+                            <div class="col-sm-12 visible-xs">&nbsp;</div>
+                            <div class="col-sm-4">
+                                <label class="control-label">Template Name:&nbsp;<i tooltip="Template name" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+                                <input ng-required="NewShipment.saveAsNewTemplate" name="newTempName" type="text" class="form-control" placeholder="Enter Template name" ng-model="NewShipment.templateName" />
+                                <span ng-if="frmAddNewShipment.$invalid && frmAddNewShipment.$submitted" ng-cloak>
+                                    <span ng-cloak class="text-danger" ng-if="frmAddNewShipment.newTempName.$error.required">Please enter template name</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+
+                    </div>
+                </form>
+            </div>
+            <div class="form-actions text-center ab">
+                <button class="btn green" form="frmAddNewShipment" ng-click="SaveData(frmAddNewShipment.$valid)" type="submit">Save</button>
+                <button class="btn default" type="button" ng-click="ResetForm()">Reset</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        setTimeout(function () {
+            window.scrollTo(0, 0);     // run it a bit later also for browser compatibility
+        }, 1000);
+    })
+</script>

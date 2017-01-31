@@ -1,0 +1,191 @@
+﻿<!--<h3 class="page-title" ng-init="Init()">
+    Users
+</h3>-->
+<div class="portlet box green " ng-init="Init()">
+    <div class="portlet-title">
+        <div class="caption">
+            <img style="margin-top:-8px" src="../../theme/img/headerUsers.png" />  {{Action}} Users
+        </div>
+    </div>
+    <div class="portlet-body form">
+        <form role="form" name="frmAddEditUser" novalidate class="form-horizontal">
+            <div class="form-body">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <h3 class="caption-subject font-green-sharp bold">User</h3>
+                    </div>
+                    <hr />
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-1 col-md-2">
+                        <label class="control-label">Title&nbsp;<i tooltip="Title" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <select class="form-control" ng-model="User.user.title">
+                                    <option value=""></option>
+                                    <option value="Mr.">Mr</option>
+                                    <option value="Mrs.">Mrs</option>
+                                    <option value="Miss">Miss</option>
+                                    <option value="MS.">MS</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 visible-xs">&nbsp;</div>
+                    <div class="col-md-4">
+                        <label class="control-label pull-left">First Name:&nbsp;<i tooltip="First Name" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+                        <label class="control-label pull-right"><span class="text-error">*</span></label>
+                        <div class="clearfix"></div>
+                        <input type="text" name="Firstname" maxlength="30" placeholder="Enter a First Name" class="form-control" ng-model="User.user.firstName" required />
+                        <span ng-cloak ng-if="frmAddEditUser.$invalid && frmAddEditUser.$submitted">
+                            <span ng-cloak class="text-danger" ng-if="frmAddEditUser.Firstname.$error.required">Please enter first name</span>
+                            <span ng-cloak class="text-danger" ng-if="frmAddEditUser.Firstname.$error.maxlength">First name must be less than or equal to 30 chars</span>
+                        </span>
+                    </div>
+                    <div class="col-md-12 visible-xs">&nbsp;</div>
+                    <div class="col-md-4">
+                        <label class="control-label">Last Name&nbsp;<i tooltip="Last Name" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+                        <input type="text" name="Lastname" maxlength="30" placeholder="Enter a Last Name" class="form-control" ng-model="User.user.lastName" />
+                        <span ng-cloak ng-if="frmAddEditUser.$invalid && frmAddEditUser.$submitted">
+                            <span ng-cloak class="text-danger" ng-if="frmAddEditUser.Lastname.$error.maxlength">Last name must be less than or equal to 30 chars</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-1 col-md-2">
+                        <label for="external_user" class="checkbox-inline">
+                            <br />
+                            <input type="checkbox" ng-model="User.user.external" id="external_user"> External User&nbsp;<i tooltip="External User" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i>
+                        </label>
+                    </div>
+                    <div class="col-md-12 visible-xs">&nbsp;</div>
+                    <div class="col-md-4">
+                        <label class="control-label">Company:&nbsp;<i tooltip="Company" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+                        <input type="text" name="Company" maxlength="30" placeholder="Enter a Company Name" class="form-control" ng-model="User.user.externalCompany" ng-disabled="!User.user.external" ng-required="User.user.external" />
+                        <span ng-cloak ng-if="frmAddEditUser.$invalid && frmAddEditUser.$submitted">
+                            <span ng-cloak class="text-danger" ng-if="frmAddEditUser.Company.$error.required">Please enter company name</span>
+                            <span ng-cloak class="text-danger" ng-if="frmAddEditUser.Company.$error.maxlength">Company name must be less than or equal to 30 chars</span>
+                        </span>
+                    </div>
+                    <div class="col-md-12 visible-xs">&nbsp;</div>
+                    <div class="col-md-4">
+                        <label class="control-label">Position:&nbsp;<i tooltip="Position" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+                        <input type="text" name="Position" maxlength="30" placeholder="Enter a Position" class="form-control" ng-model="User.user.position" />
+                        <span ng-cloak ng-if="frmAddEditUser.$invalid && frmAddEditUser.$submitted">
+                            <span ng-cloak class="text-danger" ng-if="frmAddEditUser.Position.$error.maxlength">Position must be less than or equal to 30 chars</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-1 col-md-4">
+                        <label class="control-label">Email:&nbsp;<i tooltip="Email" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+                        <input type="email" name="Email" maxlength="60" placeholder="Enter an Email" class="form-control" ng-model="User.user.email" required />
+                        <span ng-cloak ng-if="frmAddEditUser.$invalid && frmAddEditUser.$submitted">
+                            <span ng-cloak class="text-danger" ng-if="frmAddEditUser.Email.$error.required">Please enter email</span>
+                            <span ng-cloak class="text-danger" ng-if="frmAddEditUser.Email.$error.maxlength">Email must be less than or equal to 30 chars</span>
+                            <span ng-cloak class="text-danger" ng-if="frmAddEditUser.Email.$error.email">Please enter valid email address</span>
+                        </span>
+                    </div>
+                    <div class="col-md-12 visible-xs">&nbsp;</div>
+                    <div class="col-md-4">
+                        <label class="control-label">Password:&nbsp;<i tooltip="Password" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+                        <input type="password" name="Password" ng-pattern="/^(?=.*\d)([a-zA-Z0-9]{8,})$/" maxlength="30" placeholder="Enter a Password" class="form-control" ng-model="User.password" ng-required="AddUser" />
+                        <span ng-cloak ng-if="frmAddEditUser.$invalid && frmAddEditUser.$submitted">
+                            <span ng-cloak class="text-danger" ng-if="frmAddEditUser.Password.$error.required">Please enter password</span>
+                            <span ng-cloak class="text-danger" ng-if="frmAddEditUser.Password.$error.maxlength">Password must be less than or equal to 15 chars</span>
+                            <span ng-cloak class="text-danger" ng-if="frmAddEditUser.Password.$error.pattern">Password must be minimum 8 chars long and contain at least one number</span>
+                        </span>
+                    </div>
+                    <div class="col-md-2 text-right">
+                        <label for="reset_login" class="checkbox-inline">
+                            <br />
+                            <input type="checkbox" ng-model="User.resetOnLogin" id="reset_login"> Reset on login&nbsp;<i tooltip="Reset on login" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-1 col-md-4">
+                        <label class="control-label">Phone(for SMS):&nbsp;<i tooltip="Phone(for SMS)" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+                        <input type="text" name="Phone" ng-pattern="/^\+{0,1}\d{11,15}$/" placeholder="Enter a Phone" class="form-control" ng-model="User.user.phone" required />
+                        <span ng-cloak ng-if="frmAddEditUser.$invalid && frmAddEditUser.$submitted">
+                            <span ng-cloak class="text-danger" ng-if="frmAddEditUser.Phone.$error.pattern">Enter number with min (+)11 and max (+)15 digit</span>
+                            <span ng-cloak class="text-danger" ng-if="frmAddEditUser.Phone.$error.required">Please enter phone</span>
+                        </span>
+                    </div>
+                    <div class="col-md-12 visible-xs">&nbsp;</div>
+                    <div class="col-md-4">
+                        <label class="control-label">Roles:&nbsp;<i tooltip="Roles" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+                        <select required style="width:100%" multiple ui-select2="RoleOption" name="Roles" ng-model="User.user.roles" data-placeholder="Select Roles For User">
+                            <option ng-repeat="role in RoleList" value="{{role}}">{{role}}</option>
+                        </select>
+                        <span ng-cloak ng-if="frmAddEditUser.$invalid && frmAddEditUser.$submitted">
+                            <span ng-cloak class="text-danger" ng-if="frmAddEditUser.Roles.$error.required">Please select atleast one role</span>
+                        </span>
+                    </div>
+                    <div class="col-md-2 text-right">
+                        <label for="currently_active" class="checkbox-inline">
+                            <br />
+                            <input type="checkbox" ng-model="User.user.active" id="currently_active"> Currently active&nbsp;<i tooltip="Currently Active" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i>
+                        </label>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                <div class="portlet-title">
+                    <div class="caption">
+                        <h3 class="caption-subject font-green-sharp bold">Preferences</h3>
+                    </div>
+                    <hr />
+                </div>
+                <div class="form-group">
+                    <div class="col-md-1 col-md-offset-1">
+                        <label class="control-label">Scale&nbsp;<i tooltip="Scale" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+                        <select class="form-control" ng-model="User.user.temperatureUnits">
+                            <option value="Celsius">Celsius</option>
+                            <option value="Fahrenheit">Fahrenheit</option>
+                        </select>
+                    </div>
+                    <div class="col-md-12 visible-xs">&nbsp;</div>
+                    <div class="col-md-2 col-md-offset-1">
+                        <label class="control-label">Units&nbsp;<i tooltip="Units" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+                        <select class="form-control" ng-model="User.user.measurementUnits">
+                            <option value="Metric">Metric (meters)</option>
+                        </select>
+                    </div>
+                    <div class="col-md-12 visible-xs">&nbsp;</div>
+                    <div class="col-md-1 col-md-offset-1">
+                        <label class="control-label">Language&nbsp;<i tooltip="Language" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+                        <select class="form-control" ng-model="User.user.language" ng-options="language as language for language in LanguageList">
+                        </select>
+                    </div>
+                    <div class="col-md-12 visible-xs">&nbsp;</div>
+                    <div class="col-md-3 col-md-offset-1">
+                        <label class="control-label">Timezone&nbsp;<i tooltip="Timezone" tooltip-append-to-body="true" tooltip-trigger="mouseenter" tooltip-placement="top" class="fa fa-info-circle"></i></label>
+                        <select class="form-control" ng-model="User.user.timeZone" ng-options="timezone.id as timezone.displayName for timezone in TimezoneList">
+                        </select>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="col-md-12">
+                <hr />
+            </div>
+            <div class="clearfix"></div>
+            <div class="form-actions text-center">
+                <button class="btn green" ng-click="SaveData(frmAddEditUser.$valid)" type="submit">Save</button>
+                <button class="btn default" type="button">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="../app/manage-location/manage-location.js"></script>
+<script src="../app/manage-alert/manage-alert.js"></script>
+<script src="../app/manage-notification/manage-notification.js"></script>
+<script src="../app/global/directives/weekdays.js"></script>
+<script>
+    $(document).ready(function () {
+        setTimeout(function () {
+            window.scrollTo(0, 0);     // run it a bit later also for browser compatibility
+        }, 1000);
+    })
+</script>
